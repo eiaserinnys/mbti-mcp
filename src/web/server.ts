@@ -34,8 +34,8 @@ app.use(express.static(publicPath));
 // API 라우트
 app.use('/api', createRoutes());
 
-// SPA fallback - 모든 GET 요청을 index.html로
-app.get('*', (req, res) => {
+// SPA fallback - 모든 GET 요청을 index.html로 (Express 5 문법)
+app.get('/{*splat}', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
