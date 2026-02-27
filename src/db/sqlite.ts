@@ -67,6 +67,13 @@ export function initDatabase(dbPath: string = 'data/mbti.db'): Database.Database
     CREATE INDEX IF NOT EXISTS idx_results_name ON results(name);
   `);
 
+  // 마이그레이션: ip 컬럼 추가 (이미 있으면 무시)
+  try {
+    db.exec(`ALTER TABLE sessions ADD COLUMN ip TEXT`);
+  } catch {
+    // 이미 존재하면 무시
+  }
+
   return db;
 }
 
@@ -103,6 +110,7 @@ export interface SessionRow {
   id: string;
   name: string;
   agent_id: string | null;
+  ip: string | null;
   status: SessionStatus;
   current_question: number;
   created_at: string;
@@ -166,6 +174,16 @@ export function updateCurrentQuestion(
   db.prepare(`
     UPDATE sessions SET current_question = ? WHERE id = ?
   `).run(questionNumber, sessionId);
+}
+
+/**
+ * 세션 IP 저장
+ */
+export function saveSessionIp(sessionId: string, ip: string): void {
+  const db = getDatabase();
+  db.prepare(`
+    UPDATE sessions SET ip = ? WHERE id = ?
+  `).run(ip, sessionId);
 }
 
 // ==================== Answer CRUD ====================

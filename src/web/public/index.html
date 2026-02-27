@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MBTI 성격 유형 테스트</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 시작 화면 -->
+    <section id="start-screen" class="screen active">
+      <h1>MBTI 성격 유형 테스트</h1>
+      <p class="subtitle">총 32문항으로 구성된 MBTI 테스트입니다.</p>
+      <form id="start-form">
+        <div class="input-group">
+          <label for="name">이름을 입력하세요</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="이름"
+            required
+            autocomplete="name"
+          >
+        </div>
+        <button type="submit" class="btn primary">테스트 시작</button>
+      </form>
+    </section>
+
+    <!-- 문항 화면 -->
+    <section id="question-screen" class="screen">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="progress-text" id="progress-text">1 / 32</span>
+      </div>
+
+      <div class="question-container">
+        <h2 id="question-number">문항 1</h2>
+        <div class="options">
+          <div class="option option-a">
+            <span class="option-label">A</span>
+            <span id="option-a-text">선택지 A</span>
+          </div>
+          <div class="scale-container">
+            <span class="scale-label">A에 가까움</span>
+            <div class="scale-buttons" id="scale-buttons">
+              <button type="button" class="scale-btn" data-value="1">1</button>
+              <button type="button" class="scale-btn" data-value="2">2</button>
+              <button type="button" class="scale-btn" data-value="3">3</button>
+              <button type="button" class="scale-btn" data-value="4">4</button>
+              <button type="button" class="scale-btn" data-value="5">5</button>
+            </div>
+            <span class="scale-label">B에 가까움</span>
+          </div>
+          <div class="option option-b">
+            <span class="option-label">B</span>
+            <span id="option-b-text">선택지 B</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button type="button" class="btn secondary" id="prev-btn" disabled>이전</button>
+        <button type="button" class="btn primary" id="next-btn" disabled>다음</button>
+      </div>
+    </section>
+
+    <!-- 결과 화면 -->
+    <section id="result-screen" class="screen">
+      <h1>테스트 결과</h1>
+      <div class="result-card">
+        <div class="result-name" id="result-name">이름</div>
+        <div class="result-type" id="result-type">XXXX</div>
+        <div class="result-description" id="result-description">
+          유형 설명이 여기에 표시됩니다.
+        </div>
+        <div class="result-scores" id="result-scores">
+          <!-- 점수가 여기에 표시됩니다 -->
+        </div>
+      </div>
+      <button type="button" class="btn primary" id="restart-btn">다시 테스트하기</button>
+    </section>
+
+    <!-- 로딩 오버레이 -->
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- 에러 토스트 -->
+    <div id="error-toast" class="toast hidden">
+      <span id="error-message">오류가 발생했습니다.</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

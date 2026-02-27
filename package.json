@@ -5,9 +5,12 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-public",
+    "copy-public": "mkdir -p dist/web && cp -r src/web/public dist/web/",
     "start": "node dist/index.js",
+    "start:web": "node dist/web/server.js",
     "dev": "tsx watch src/index.ts",
+    "dev:web": "tsx watch src/web/server.ts",
     "lint": "eslint src/**/*.ts",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -22,7 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
+    "@types/express": "^5.0.6",
     "better-sqlite3": "^11.0.0",
+    "express": "^5.2.1",
     "uuid": "^11.0.0"
   },
   "devDependencies": {
