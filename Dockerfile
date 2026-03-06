@@ -1,5 +1,5 @@
 # MBTI MCP Server Dockerfile
-# MCP 서버 (stdio → SSE via supergateway) + 웹 서버
+# HTTP Streaming MCP 서버 + 웹 서버
 
 FROM node:22-slim AS builder
 
@@ -29,13 +29,14 @@ RUN npm run build
 # ===================
 FROM node:22-slim
 
+# 로케일 설정 (한국어 지원)
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 # 런타임 의존성 설치 (healthcheck용 wget)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends wget && \
     rm -rf /var/lib/apt/lists/*
-
-# supergateway 글로벌 설치
-RUN npm install -g supergateway
 
 WORKDIR /app
 
@@ -52,13 +53,14 @@ RUN mkdir -p /app/data
 # 환경 변수
 ENV NODE_ENV=production
 ENV MBTI_DB_PATH=/app/data/mbti.db
+ENV MBTI_MCP_PORT=8004
 ENV MBTI_WEB_PORT=3000
 
 # 포트 노출
-# 8000: MCP SSE (supergateway)
+# 8004: MCP HTTP (Streamable HTTP)
 # 3000: 웹 UI
-EXPOSE 8000 3000
+EXPOSE 8004 3000
 
-# 기본 커맨드 (MCP 서버 + supergateway)
+# 기본 커맨드 (HTTP MCP 서버)
 # docker-compose에서 오버라이드 가능
-CMD ["sh", "-c", "npx supergateway --stdio 'node dist/index.js' --port 8000 --healthEndpoint /health --logLevel info"]
+CMD ["node", "dist/http-server.js"]
